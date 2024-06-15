@@ -40,10 +40,58 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        /*
+                if s.is_empty() {
+                    return Person::default();
+                }
+                let strs: Vec<&str> = s.split(',').collect();
+                match strs.len() {
+                    2 => {
+                        if strs[0].len() == 0 || strs[1].len() == 0 || strs[1].parse::<usize>().is_err() {
+                            return Person::default();
+                        }
+                        println!("{:?}", strs);
+                        return Person {
+                            name: String::from(strs[0]),
+                            age: strs[1].parse::<usize>().unwrap(),
+                        };
+                    }
+                    _ => return Person::default(),
+                }
+        */
+        // 检查输入字符串是否为空
+        if s.is_empty() {
+            return Person::default();
+        }
+
+        // 分割字符串并收集到 Vec 中
+        let parts: Vec<&str> = s.split(',').collect();
+
+        // 检查分割后的部分数量是否为2
+        if parts.len() != 2 {
+            return Person::default();
+        }
+
+        // 提取和验证 name 和 age 部分
+        let name = parts[0];
+        let age_str = parts[1];
+
+        if name.is_empty() || age_str.is_empty() {
+            return Person::default();
+        }
+
+        // 尝试将 age_str 解析为 usize
+        if let Ok(age) = age_str.parse::<usize>() {
+            return Person {
+                name: name.to_string(),
+                age,
+            };
+        }
+
+        // 如果解析失败，返回默认的 Person
+        Person::default()
     }
 }
 
